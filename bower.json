@@ -1,0 +1,14 @@
+{
+    "name": "cbn-svg",
+    "private": true,
+    "dependencies": {
+        "polymer": "Polymer/polymer#1.4.0"
+    },
+    "devDependencies":{
+        "iron-ajax": "PolymerElements/iron-ajax#^1.0.0"
+    },
+    "version": "0.1",
+    "resolutions": {
+        "polymer": "^1.4.0"
+    }
+}

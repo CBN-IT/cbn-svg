@@ -1,0 +1,45 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="cbn-svg">
+	<style>
+		:host {
+			display: block;
+			height:100%;
+			width:100%;
+		}
+	</style>
+	<template>
+		<content></content>
+	</template>
+</dom-module>
+
+<script>
+	(function () {
+		Polymer({
+
+			is: 'cbn-svg',
+			behaviors: [],
+			properties: {
+				content:{
+					type:String
+				}
+			},
+			observers:[
+				"draw(content)"	
+			],
+			listeners: {},
+			ready: function () {
+			},
+			draw:function(){
+				if(this.content != "" && this.content != null){
+					Polymer.dom(this).innerHTML=this.content;
+					var svg = Polymer.dom(this).querySelector("svg");
+					svg.removeAttribute("width");
+					svg.removeAttribute("height");
+					svg.style.width="100%";
+					svg.style.height="100%";
+				}
+			}
+		})
+	})();
+</script>

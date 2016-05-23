@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>cbn-copy-clipboard</title>
+    <link rel="import" href="../cbn-svg.html">
+	<link rel="import" href="../../iron-ajax/iron-ajax.html">
+	<style>
+		html,body{
+			width:100%;
+			height:100%;
+			margin:0;
+			padding:0;
+		}
+	</style>
+</head>
+<body>
+	<template is="dom-bind">
+		<iron-ajax url="siloz.svg" last-response="{{svg}}" auto handle-as="text"></iron-ajax>
+		<cbn-svg content="[[svg]]"></cbn-svg>
+		<cbn-svg content="[[svg]]"></cbn-svg>
+	</template>
+</body>
+</html>
