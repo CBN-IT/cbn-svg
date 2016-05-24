@@ -31,18 +31,18 @@
 			ready: function () {
 			},
 			draw:function(){
-				if(this.content != "" && this.content != null){
-					Polymer.dom(this).innerHTML=this.content;
+				if (this.content != "" && this.content != null) {
+					Polymer.dom(this).innerHTML = this.content;
 					var svg = Polymer.dom(this).querySelector("svg");
 					svg.removeAttribute("width");
 					svg.removeAttribute("height");
-					svg.style.width="100%";
-					svg.style.height="100%";
+					svg.style.width = "100%";
+					svg.style.height = "100%";
 					this._applyHackRadialGradient(svg);
-					
-					this.fire("svg-load",{
-						svg:svg
-					})
+
+					this.fire("svg-load", {
+						svg: svg
+					});
 				}
 			},
 			/**
