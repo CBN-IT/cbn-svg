@@ -38,7 +38,31 @@
 					svg.removeAttribute("height");
 					svg.style.width="100%";
 					svg.style.height="100%";
+					this._applyHackRadialGradient(svg);
+					/* */
+					
+					
+					this.fire("svg-load",{
+						svg:svg
+					})
 				}
+			},
+			/**
+			 * something breaks when using polymer and radial gradients that point to linear gradient.
+			 * moving the content of linear gradient inside the radial gradient is a hack, but works
+			 * @param svg
+             * @private
+             */
+			_applyHackRadialGradient:function(svg){
+				var radials = svg.querySelectorAll("radialGradient");
+				Array.prototype.forEach.call(radials, function (radial) {
+					if (radial.hasAttribute("xlink:href")) {
+						var id = radial.getAttribute("xlink:href");
+						var linearId = svg.querySelector(id);
+						radial.innerHTML = linearId.innerHTML;
+						radial.removeAttribute("xlink:href");
+					}
+				});
 			}
 		})
 	})();
