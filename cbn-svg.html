@@ -1,0 +1,68 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="cbn-svg">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+        </style>
+        <slot></slot>
+    </template>
+
+    <script>
+        /**
+         * `cbn-svg`
+         *
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class CbnSvg extends Polymer.Element {
+            static get is() {
+                return 'cbn-svg';
+            }
+
+            static get properties() {
+                return {
+                    content: {
+                        type: String,
+                        observer: "draw"
+                    }
+                };
+            }
+
+            draw() {
+                if (this.content != "" && this.content != null) {
+                    this.shadowRoot.querySelector('slot').innerHTML = this.content;
+                    let svg = this.shadowRoot.querySelector("svg");
+                    svg.removeAttribute("width");
+                    svg.removeAttribute("height");
+                    svg.style.width = "100%";
+                    svg.style.height = "100%";
+                    this._applyHackRadialGradient(svg);
+                    this.dispatchEvent(new CustomEvent('svg-load', {
+                        bubbles: true,
+                        composed: true,
+                        detail: {svg: svg}
+                    }));
+                }
+            }
+
+            _applyHackRadialGradient(svg) {
+                let radials = svg.querySelectorAll("radialGradient");
+                Array.prototype.forEach.call(radials, function (radial) {
+                    if (radial.hasAttribute("xlink:href")) {
+                        let id = radial.getAttribute("xlink:href");
+                        let linearId = svg.querySelector(id);
+                        radial.innerHTML = linearId.innerHTML;
+                        radial.removeAttribute("xlink:href");
+                    }
+                });
+            }
+        }
+
+        window.customElements.define(CbnSvg.is, CbnSvg);
+    </script>
+</dom-module>
