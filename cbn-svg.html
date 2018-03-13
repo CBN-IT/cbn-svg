@@ -29,6 +29,12 @@
                     content: {
                         type: String,
                         observer: "draw"
+                    },
+                    _ios: {
+                        type: Boolean,
+                        value: function () {
+                            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                        }
                     }
                 };
             }
@@ -42,6 +48,9 @@
                     svg.style.width = "100%";
                     svg.style.height = "100%";
                     this._applyHackRadialGradient(svg);
+                    if (this._ios) {
+                        this._applySafariHack(svg);
+                    }
                     this.dispatchEvent(new CustomEvent('cbn-svg-load', {
                         bubbles: true,
                         composed: true,
@@ -50,8 +59,32 @@
                 }
             }
 
+            _applySafariHack(svg) {
+                let paths = svg.querySelectorAll("path,circle");
+                Array.prototype.forEach.call(paths, function (radial) {
+                    if (radial.style.fill !== null && radial.style.fill.indexOf("url(") === 0) {
+                        let ref = radial.style.fill.replace(/url\("?/, "").replace(/"?\)/, "");
+                        let gradient = svg.querySelector(ref);
+                        if (gradient !== null) {
+                            let stops = gradient.querySelectorAll("stop");
+                            if (stops.length > 1) {
+                                radial.style.fill = stops[1].style.stopColor;
+                            } else {
+                                radial.style.fill = stops[0].style.stopColor;
+                            }
+                        }
+
+                    }
+                }.bind(this));
+                let defs = svg.querySelector("defs");
+                if (defs !== null) {
+                    defs.remove();
+                }
+
+            }
+
             _applyHackRadialGradient(svg) {
-                let radials = svg.querySelectorAll("radialGradient");
+                let radials = svg.querySelectorAll("radialGradient,linearGradient");
                 Array.prototype.forEach.call(radials, function (radial) {
                     if (radial.hasAttribute("xlink:href")) {
                         let id = radial.getAttribute("xlink:href");
@@ -59,7 +92,7 @@
                         radial.innerHTML = linearId.innerHTML;
                         radial.removeAttribute("xlink:href");
                     }
-                });
+                }.bind(this));
             }
         }
 
