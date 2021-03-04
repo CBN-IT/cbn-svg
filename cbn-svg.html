@@ -7,7 +7,7 @@
                 display: block;
             }
         </style>
-        <slot></slot>
+        <span></span>
     </template>
 
     <script>
@@ -41,7 +41,7 @@
 
             draw() {
                 if (this.content != "" && this.content != null) {
-                    this.shadowRoot.querySelector('slot').innerHTML = this.content;
+                    this.shadowRoot.querySelector('span').innerHTML = this.content;
                     let svg = this.shadowRoot.querySelector("svg");
                     svg.removeAttribute("width");
                     svg.removeAttribute("height");
